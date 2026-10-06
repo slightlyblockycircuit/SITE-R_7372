@@ -1,0 +1,136 @@
+<div style="background:#14161a;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;font-size:14px">
+
+<div>
+<div style="font-weight:500;margin-bottom:8px;font-size:12px;letter-spacing:0.3px;text-transform:uppercase;color:#8a8d94">Sensors</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+
+<div style="border-left:4px solid #5DCAA5;background:#1c1f24;border-radius:8px;padding:10px 14px">
+<div style="font-weight:500;color:#9FE1CB;margin-bottom:6px">DHT11 (temp/hum)</div>
+<div style="color:#c7c9ce;line-height:1.9">
+GPIO4 → DATA<br>
+<span style="color:#F0997B">3.3V → VCC</span> &nbsp; <span style="color:#8a8d94">GND → GND</span>
+</div>
+</div>
+
+<div style="border-left:4px solid #85B7EB;background:#1c1f24;border-radius:8px;padding:10px 14px">
+<div style="font-weight:500;color:#B5D4F4;margin-bottom:6px">MQ-6 (gas)</div>
+<div style="color:#c7c9ce;line-height:1.9">
+GPIO34 → AOUT<br>
+<span style="color:#F0997B">5V → VCC</span> &nbsp; <span style="color:#8a8d94">GND → GND</span>
+</div>
+</div>
+
+<div style="border-left:4px solid #97C459;background:#1c1f24;border-radius:8px;padding:10px 14px">
+<div style="font-weight:500;color:#C0DD97;margin-bottom:6px">Soil moisture</div>
+<div style="color:#c7c9ce;line-height:1.9">
+GPIO35 → AOUT<br>
+<span style="color:#F0997B">3.3V → VCC</span> &nbsp; <span style="color:#8a8d94">GND → GND</span>
+</div>
+</div>
+
+<div style="border-left:4px solid #EF9F27;background:#1c1f24;border-radius:8px;padding:10px 14px">
+<div style="font-weight:500;color:#FAC775;margin-bottom:6px">LDR (bare 2-pin) — light sensor</div>
+<div style="color:#c7c9ce;line-height:1.9">
+LDR pin 1 → <span style="color:#F0997B">3.3V (VCC)</span><br>
+LDR pin 2 → GPIO32 (midpoint)<br>
+<span style="color:#F0997B">10k&Omega; resistor</span> → GPIO32 → <span style="color:#8a8d94">GND</span><br>
+<br>
+Wired as a voltage divider:<br>
+<span style="color:#F0997B">3V3</span> &mdash;[LDR]&mdash;<span style="color:#FAC775">GPIO32</span>&mdash;[10k]&mdash;<span style="color:#8a8d94">GND</span><br>
+<span style="color:#8a8d94">Note: bright = high ADC, dark = low ADC (0 = dark, 4096 = full bright)</span><br>
+<span style="color:#8a8d94">Auto LED thresholds: &ge;2000 = off, &le;100 = max, 100-2000 = gradual</span>
+</div>
+</div>
+
+</div>
+</div>
+
+<div>
+<div style="font-weight:500;margin-bottom:8px;font-size:12px;letter-spacing:0.3px;text-transform:uppercase;color:#8a8d94">Actuators / drivers</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+
+<div style="border-left:4px solid #AFA9EC;background:#1c1f24;border-radius:8px;padding:10px 14px">
+<div style="font-weight:500;color:#CECBF6;margin-bottom:6px">L298N — Channel A: Grow LED (PWM dimming)</div>
+<div style="color:#c7c9ce;line-height:1.9">
+GPIO25 → IN1 (direction, held HIGH)<br>
+GPIO26 → ENA (PWM = LED brightness 0-255)<br>
+<span style="color:#8a8d94">IN2 → GND</span> (fixed direction)<br>
+OUT1/OUT2 → LED + / LED -<br>
+<br>
+<b>PWM on ENA pin</b> with IN1=HIGH/IN2=LOW dims the LED smoothly via L298N.
+</div>
+</div>
+
+<div style="border-left:4px solid #5DCAA5;background:#1c1f24;border-radius:8px;padding:10px 14px">
+<div style="font-weight:500;color:#9FE1CB;margin-bottom:6px">Peltier module (heater / water purifier) — HJR-3FC relay</div>
+<div style="color:#c7c9ce;line-height:1.9">
+GPIO19 → relay IN<br>
+<span style="color:#F0997B">5V → relay VCC</span> &nbsp; <span style="color:#8a8d94">GND → relay GND (share with ESP32)</span><br>
+Relay COM ← <span style="color:#F0997B">12V PSU +</span> &nbsp; Relay NO → Peltier +/red<br>
+Peltier -/black ← <span style="color:#F0997B">12V PSU -</span><br>
+<br>
+On/off relay switching (no PWM). Red wire = 12V HOT, black = GND. Jumper = high trigger.
+</div>
+</div>
+
+<div style="border-left:4px solid #B4B2A9;background:#1c1f24;border-radius:8px;padding:10px 14px">
+<div style="font-weight:500;color:#D3D1C7;margin-bottom:6px">L298N — Power / common (Channel A = Grow LED only)</div>
+<div style="color:#c7c9ce;line-height:1.9">
+<span style="color:#F0997B">12V terminal → motor supply +</span><br>
+<span style="color:#8a8d94">GND terminal → supply GND + ESP32 GND</span><br>
+<span style="color:#F0997B">5V OUT → leave unused (12V input mode)</span>
+</div>
+</div>
+
+<div style="border-left:4px solid #F0997B;background:#1c1f24;border-radius:8px;padding:10px 14px">
+<div style="font-weight:500;color:#F5C4B3;margin-bottom:6px">Mist maker (MOSFET module)</div>
+<div style="color:#c7c9ce;line-height:1.9">
+GPIO23 → gate/signal<br>
+<span style="color:#8a8d94">ESP32 GND → MOSFET GND</span> &nbsp; <span style="color:#F0997B">5V → mist VCC</span>
+</div>
+</div>
+
+<div style="border-left:4px solid #FAC775;background:#1c1f24;border-radius:8px;padding:10px 14px">
+<div style="font-weight:500;color:#FAC775;margin-bottom:6px">Buzzer (2-pin passive)</div>
+<div style="color:#c7c9ce;line-height:1.9">
+GPIO33 → + (signal)<br>
+<span style="color:#8a8d94">GND → -</span>
+</div>
+</div>
+
+</div>
+</div>
+
+<div>
+<div style="font-weight:500;margin-bottom:8px;font-size:12px;letter-spacing:0.3px;text-transform:uppercase;color:#8a8d94">Interface</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+
+<div style="border-left:4px solid #B4B2A9;background:#1c1f24;border-radius:8px;padding:10px 14px">
+<div style="font-weight:500;color:#D3D1C7;margin-bottom:6px">Buttons (Earth / Mars / Moon)</div>
+<div style="color:#c7c9ce;line-height:1.9">
+GPIO13 / GPIO16 / GPIO17 → btn leg 1 (each)<br>
+<span style="color:#8a8d94">all btn leg 2 → GND</span> (INPUT_PULLUP)
+</div>
+</div>
+
+<div style="border-left:4px solid #F0997B;background:#1c1f24;border-radius:8px;padding:10px 14px">
+<div style="font-weight:500;color:#F5C4B3;margin-bottom:6px">I2C LCD (16x2)</div>
+<div style="color:#c7c9ce;line-height:1.9">
+GPIO21 → SDA &nbsp; GPIO22 → SCL<br>
+<span style="color:#F0997B">5V → VCC</span> &nbsp; <span style="color:#8a8d94">GND → GND</span>
+</div>
+</div>
+
+</div>
+</div>
+
+<div style="font-size:11px;color:#8a8d94;line-height:1.7;margin-top:6px">
+  Firmware v3: auto-off by default. Web alarm (red glow + beep) triggers on temp &ge;35&deg;C / &le;10&deg;C, MQ6 &ge;2500, humidity &gt;90% / &lt;30%, dry soil &ge;2000. Grow-LED dims with LDR in EARTH/MARS/MOON (max 255/153/60). Buzzer: gas = urgent 2200Hz bursts, else 1600Hz triple-beep.
+</div>
+
+<div style="display:flex;gap:16px;padding:8px 4px;font-size:12px;color:#8a8d94">
+<span><span style="color:#F0997B;font-weight:500">■</span> = positive supply</span>
+<span><span style="color:#8a8d94;font-weight:500">■</span> = GND</span>
+</div>
+
+</div>
