@@ -2,6 +2,41 @@
 
 SITE-R 7372 is an ESP32-based habitat life-support controller for a sealed glass regolith tank. It reads environmental sensors and drives heaters, a grow light, and a misting pump in a safe, automated way, with a live web dashboard and an on-site LCD.
 
+## Bill of Materials
+
+| # | Part | Qty | Notes |
+|---|------|-----|-------|
+| 1 | ESP32 Dev Module, 38-pin (Robocraze) | 1 | Main controller |
+| 2 | DHT11 temperature + humidity module | 1 | GPIO4 |
+| 3 | MQ6 gas sensor module | 1 | GPIO34 (ADC), 5V supply |
+| 4 | Soil moisture sensor, 2-pin analog | 1 | GPIO35 (ADC) |
+| 5 | LDR photoresistor | 1 | GPIO32 with 10k divider |
+| 6 | 10kΩ resistor | 2 | LDR divider |
+| 7 | I2C 16x2 LCD + PCF8574 backpack | 1 | SDA21 / SCL22 |
+| 8 | L298N motor driver module | 1 | Grow-light channel |
+| 9 | HJR-3FC 5V relay module | 1 | Peltier switching |
+| 10 | Peltier element (TEC1-12706) | 1 | Heater |
+| 11 | Ultrasonic mist maker / fogger | 1 | Irrigation |
+| 12 | MOSFET driver module (IRF520) | 1 | Mist pump |
+| 13 | Passive buzzer, 2-pin | 1 | GPIO33 |
+| 14 | Tactile push button | 3 | EARTH / MARS / MOON |
+| 15 | Breadboard, 830-point | 1 | Prototyping |
+| 16 | Jumper wire kit | 1 | — |
+| 17 | 5V / 2A USB power supply | 1 | Logic + actuators |
+| 18 | 12V / 2A power supply | 1 | Peltier via relay |
+| 19 | Glass terrarium / display enclosure | 1 | Habitat |
+| 20 | Zip ties, hot glue, standoffs, cable clips | 1 set | Mounting |
+
+Also available as [`BOM.csv`](BOM.csv).
+
+## Images
+
+![Assembled build inside the enclosure](docs/build.jpg)
+
+![Wiring layout on the breadboard](docs/wiring.jpg)
+
+![Web dashboard showing live telemetry](docs/dashboard.jpg)
+
 ## Hardware
 - ESP32 Dev Module (38-pin, Robocraze)
 - DHT11 temperature + humidity
@@ -56,30 +91,6 @@ SITE-R 7372 is an ESP32-based habitat life-support controller for a sealed glass
 | Humidity high | >90 % | glow + beep | buzzer |
 | Humidity low | <30 % | glow + beep | buzzer |
 | Soil dry | ≥2000 | glow + beep | buzzer |
-
-
-SITE-R 7372 parts list
-
-ESP32 Dev Module 38-pin (Robocraze) — 1
-DHT11 temp/humidity module — 1
-MQ6 gas sensor module — 1
-Soil moisture sensor (2-pin analog) — 1
-LDR photoresistor — 1
-10kΩ resistor (for LDR voltage divider) — 2
-I2C 16x2 LCD with PCF8574 backpack — 1
-L298N motor driver module (grow light channel) — 1
-HJR-3FC 5V relay module (for Peltier) — 1
-Peltier element (TEC1-12706) — 1
-Ultrasonic mist maker / fogger — 1
-MOSFET driver module (IRF520, for mist) — 1
-Passive buzzer 2-pin — 1
-Tactile push buttons (EARTH / MARS / MOON) — 3
-Breadboard 830-point — 1
-Jumper wire kit — 1
-5V/2A USB power supply — 1
-12V/2A power supply (for Peltier via relay) — 1
-Glass terrarium / display enclosure — 1
-Zip ties, hot glue, standoffs, cable clips — 1 set
 
 ## Build & flash (PlatformIO)
 ```bash
